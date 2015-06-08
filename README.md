@@ -1,5 +1,7 @@
-# spring-xd-release
-Release code and artifacts for Spring XD
+# spring-xd-packaing
+Packaging and release code and artifacts for Spring XD
+
+### For the RPM build:
 
 Prepare by copying `spring-xd-1.2.0.{version}-dist.zip` to `rpmbuild/SOURCES/`
 
