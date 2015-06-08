@@ -1,4 +1,4 @@
-# spring-xd-packaing
+# spring-xd-packaging
 Packaging and release code and artifacts for Spring XD
 
 ### Building the Spring XD Release RPM:
