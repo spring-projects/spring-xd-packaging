@@ -12,3 +12,5 @@ BUILD/
 BUILDROOT/
 RPMS/
 *-dist.zip
+build
+.gradle

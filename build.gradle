@@ -1,0 +1,83 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.netflix.nebula:gradle-ospackage-plugin:2.2.6'
+	}
+}
+
+apply plugin: 'os-package'
+apply plugin: 'rpm'
+
+buildDeb.enabled = false
+
+repositories {
+	maven { url "http://repo.springsource.org/libs-milestone" }
+}
+
+configurations {
+	rpm
+}
+
+dependencies {
+	rpm group: 'org.springframework.xd', name: 'spring-xd', version: "${springXdVersion}", classifier: 'dist', ext: 'zip'
+}
+
+task extractDist(type: Copy) {
+	from {
+		configurations.rpm.collect { zipTree(it) }
+	}
+	into "$buildDir/dist/"
+}
+
+ospackage {
+	packageName = 'spring-xd'
+	release = 1
+	arch = NOARCH
+	os = LINUX
+	user = 'spring-xd'
+	permissionGroup = 'pivotal'
+	summary = "Pivotal Spring XD: One stop solution to simplify Big Data complexity"
+	packageDescription = "Pivotal's Spring XD is a unified, distributed, and extensible system for data ingestion, real time analytics, batch processing, and data export. The project's goal is to simplify the development of big data applications."
+	packageGroup = 'Applications/Databases'
+	license = 'Apache License v2.0'
+	vendor = 'Pivotal'
+	packager = 'spring-xd@pivotal.io'
+	url = 'http://projects.spring.io/spring-xd'
+
+	from('src/main/resources/logs') {
+		createDirectoryEntry = true
+		into "spring-xd-${springXdVersion}/xd/logs"
+	}
+
+	from('src/main/resources/scripts') {
+		fileMode = 0755
+		user 'root'
+		group 'root'
+		into '/etc/rc.d/init.d'
+	}
+
+	from('src/main/resources/config') {
+		fileMode = 0644
+		user 'root'
+		group 'root'
+		into '/etc/sysconfig'
+	}
+
+	from "$buildDir/dist/"
+
+	link('/opt/pivotal/spring-xd', "/opt/pivotal/spring-xd-${springXdVersion}")
+
+	requires('chkconfig')
+
+	preInstall file('src/main/resources/rpm/preinstall.sh')
+	postInstall file('src/main/resources/rpm/postinstall.sh')
+	preUninstall file('src/main/resources/rpm/preuninstall.sh')
+	postUninstall file('src/main/resources/rpm/postuninstall.sh')
+
+	into '/opt/pivotal'
+
+}
+
+buildRpm.dependsOn extractDist
