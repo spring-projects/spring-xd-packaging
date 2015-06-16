@@ -1,16 +1,26 @@
 # spring-xd-packaging
+
 Packaging and release code and artifacts for Spring XD
 
-### Building the Spring XD Release RPM:
+## Prepare for a new version
 
-Prepare by copying `spring-xd-1.2.0.{version}-dist.zip` to `rpmbuild/SOURCES/`
+Update `rpmbuild/SPECS/spring-xd-noarch.spec` with the current version. Also, create a Git tag for the version.
+
+Next, build the RPM using one of the following methods:
+
+
+### Building the Spring XD Release RPM from a RedHat/CentOS system:
+
+Prepare by copying `spring-xd-{version}-dist.zip` to `rpmbuild/SOURCES/`
 
 Build using:
 
     $ rpmbuild -bb rpmbuild/SPECS/spring-xd-noarch.spec
 
+The Spring XD RPM should now be available in `rpmbuild/RPMS/noarch`
 
-### Building Spring XD RPM with Vagrant
+
+### Building Spring XD Release RPM with Vagrant
 
 You need to install [Vagrant](http://docs.vagrantup.com/v2/installation/) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Then add the `chef/centos-6.5` box for VirtualBox.
 
