@@ -39,7 +39,7 @@ The first time the VM is started we should install `rpm-build`
 Now copy the Spring XD release distribution zip file (set XD_VERSION to the correct version):
 
     $ export XD_VERSION='{new-release-version}'
-    $ export XD_REPO='http://repo.spring.io/libs-milestone-local'
+    $ export XD_REPO='http://repo.spring.io/libs-release-local'
     $ wget -P rpmbuild/SOURCES  ${XD_REPO}/org/springframework/xd/spring-xd/${XD_VERSION}/spring-xd-${XD_VERSION}-dist.zip
 
 Finally build the RPM:
