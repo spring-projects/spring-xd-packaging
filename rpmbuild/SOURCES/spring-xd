@@ -44,3 +44,6 @@ CONTAINER_LOGFILE=${XD_HOME}/xd/logs/container.log
 
 # The port for the management server
 #CONTROL_MGMT_PORT=
+
+# The number of container processes to run
+CONTAINER_PROCESSES=1

@@ -29,8 +29,8 @@ USER="spring-xd"
 PROG="xd-container"
 EXEC="$XD_HOME/xd/bin/$PROG"
 LOCKFILE=/var/lock/subsys/$PROG
-PIDFILE=/var/run/${PROG}.pid
-
+PIDBASE=/var/run/${PROG}
+PIDFILE=${PIDBASE}.pid
 
 if [ ! -z "$ANALYTICS" ]; then
    CMD_LINE_OPTS="--analytics $ANALYTICS"
@@ -49,12 +49,16 @@ if [ ! -z "$HADOOP_USER_NAME" ]; then
 else
    CMD_EXEC="$EXEC"
 fi
-
+if [ ! -z "$CONTAINER_PROCESSES" ]; then
+   CONTAINERS=$CONTAINER_PROCESSES
+else
+   CONTAINERS=1
+fi
 
 start() {
     [ -x $EXEC ] || exit 5
     [ -f $CONFIG ] || exit 6
-    echo -n $"Starting $PROG: "
+    echo -n $"Starting $PROG 1: "
     XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS >> $CONTAINER_LOGFILE 2>&1 & echo \${!}");
     RETVAL=$?
     case "$RETVAL" in
@@ -69,15 +73,32 @@ start() {
             failure
             ;;
     esac
+    CONT_INST=2
+    while [ $RETVAL -le 0 ] && [ $CONT_INST -le $CONTAINERS ]; do
+      echo -n $"Starting $PROG $CONT_INST: "
+      XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS >> $CONTAINER_LOGFILE 2>&1 & echo \${!}");
+      echo $XD_PID > $PIDBASE_P$CONT_INST.pid
+      success
+      echo
+      let CONT_INST=CONT_INST+1
+    done
     return $RETVAL
 }
 
 stop() {
-    echo -n $"Stopping $PROG: "
+    echo -n $"Stopping $PROG 1: "
     killproc -p $PIDFILE $PROG
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && rm -f $LOCKFILE $PIDFILE
+    CONT_INST=2
+    while [ $CONT_INST -le $CONTAINERS ]; do
+      echo -n "Stopping $PROG $CONT_INST: "
+      killproc -p $PIDBASE_P$CONT_INST.pid $PROG
+      echo
+      rm -f $PIDBASE_P$CONT_INST.pid 
+      let CONT_INST=CONT_INST+1
+    done
     return $RETVAL
 }
 
@@ -97,6 +118,13 @@ force_reload() {
 rh_status() {
     # run checks to determine if the service is running or use generic status
     status -p $PIDFILE $PROG
+    RETVAL=$?
+    CONT_INST=2
+    while [ $RETVAL -le 0 ] && [ $CONT_INST -le $CONTAINERS ]; do
+    status -p $PIDBASE_P$CONT_INST.pid $PROG
+      let CONT_INST=CONT_INST+1
+    done
+    return $RETVAL
 }
 
 rh_status_q() {
