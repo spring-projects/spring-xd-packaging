@@ -5,7 +5,7 @@
 # Options used by both admin and container
 
 # Location of Spring XD installation
-XD_HOME=/opt/pivotal/spring-xd
+XD_INSTALL_DIR=/opt/pivotal/spring-xd
 
 # How to persist analytics such as counters and gauges
 # [redis]
@@ -15,9 +15,9 @@ XD_HOME=/opt/pivotal/spring-xd
 ##########
 # Admin specfic options
 
-# ADMIN_LOGFILE must match log4j.appender.file.File in
-# xd-admin-logger.properties
-ADMIN_LOGFILE=${XD_HOME}/xd/logs/admin.log
+# ADMIN_LOGFILE_DIR must match path for logfileNameBase in
+# xd-admin-logback.groovy
+ADMIN_LOGFILE_DIR=${XD_INSTALL_DIR}/xd/logs
 
 # Http port for the REST API server
 # [9393]
@@ -29,9 +29,9 @@ ADMIN_LOGFILE=${XD_HOME}/xd/logs/admin.log
 ##########
 # Container specific options
 
-# CONTAINER_LOGFILE must match log4j.appender.file.File in
-# xd-container-logger.properties
-CONTAINER_LOGFILE=${XD_HOME}/xd/logs/container.log
+# CONTAINER_LOGFILE_DIR must match path for logfileNameBase in
+# xd-container-logback.groovy
+CONTAINER_LOGFILE_DIR=${XD_INSTALL_DIR}/xd/logs
 
 # The group memberships for this container as a quoted
 # comma delimited string

@@ -27,7 +27,7 @@
 CONFIG=/etc/sysconfig/spring-xd
 USER="spring-xd"
 PROG="xd-admin"
-EXEC="$XD_HOME/xd/bin/$PROG"
+EXEC="$XD_INSTALL_DIR/xd/bin/$PROG"
 LOCKFILE=/var/lock/subsys/$PROG
 PIDFILE=/var/run/${PROG}.pid
 
@@ -47,7 +47,7 @@ start() {
     [ -x $EXEC ] || exit 5
     [ -f $CONFIG ] || exit 6
     echo -n $"Starting $PROG: "
-    XD_PID=$(runuser $USER -c "$EXEC $CMD_LINE_OPTS >> $ADMIN_LOGFILE 2>&1 & echo \${!}");
+    XD_PID=$(runuser $USER -c "$EXEC $CMD_LINE_OPTS > $ADMIN_LOGFILE_DIR/admin-start.log 2>&1 & echo \${!}");
     RETVAL=$?
     case "$RETVAL" in
         0)

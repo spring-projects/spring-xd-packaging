@@ -27,7 +27,7 @@
 CONFIG=/etc/sysconfig/spring-xd
 USER="spring-xd"
 PROG="xd-container"
-EXEC="$XD_HOME/xd/bin/$PROG"
+EXEC="$XD_INSTALL_DIR/xd/bin/$PROG"
 LOCKFILE=/var/lock/subsys/$PROG
 PIDBASE=/var/run/${PROG}
 PIDFILE=${PIDBASE}.pid
@@ -59,7 +59,7 @@ start() {
     [ -x $EXEC ] || exit 5
     [ -f $CONFIG ] || exit 6
     echo -n $"Starting $PROG 1: "
-    XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS >> $CONTAINER_LOGFILE 2>&1 & echo \${!}");
+    XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS > $CONTAINER_LOGFILE_DIR/container-1-start.log 2>&1 & echo \${!}");
     RETVAL=$?
     case "$RETVAL" in
         0)
@@ -76,7 +76,7 @@ start() {
     CONT_INST=2
     while [ $RETVAL -le 0 ] && [ $CONT_INST -le $CONTAINERS ]; do
       echo -n $"Starting $PROG $CONT_INST: "
-      XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS >> $CONTAINER_LOGFILE 2>&1 & echo \${!}");
+      XD_PID=$(runuser $USER -c "$CMD_EXEC $CMD_LINE_OPTS > $CONTAINER_LOGFILE_DIR/container-${CONT_INST}-start.log 2>&1 & echo \${!}");
       echo $XD_PID > $PIDBASE_P$CONT_INST.pid
       success
       echo
