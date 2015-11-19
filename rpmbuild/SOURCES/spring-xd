@@ -39,7 +39,7 @@ CONTAINER_LOGFILE_DIR=${XD_INSTALL_DIR}/xd/logs
 #GROUP_MEM=""
 
 # The Hadoop distribution to be used for HDFS access
-# [hadoop26 | phd21 | phd30 | cdh5 | hdp22]
+# [hadoop27 | phd21 | phd30 | cdh5 | hdp22]
 #HADOOP_DISTRO=
 
 # The port for the management server
