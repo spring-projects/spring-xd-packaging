@@ -1,7 +1,7 @@
 # Spring-XD spec file for RHEL 6
 
 Name:           spring-xd 
-Version:        1.3.0.RELEASE
+Version:        1.3.2.RELEASE
 Release:        1
 Summary:        Pivotal Spring XD: One stop solution to simplify Big Data complexity
 # see /usr/share/doc/rpm-*/GROUPS for list
