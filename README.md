@@ -22,7 +22,7 @@ The Spring XD RPM should now be available in `rpmbuild/RPMS/noarch`
 
 ### Building Spring XD Release RPM with Vagrant
 
-You need to install [Vagrant](http://docs.vagrantup.com/v2/installation/) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Then add the `chef/centos-6.5` box for VirtualBox.
+You need to install [Vagrant](https://docs.vagrantup.com/v2/installation/) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Then add the `chef/centos-6.5` box for VirtualBox.
 
 We are providing a Vagrant file for easy building of the RPM. Follow these steps from the root directory of this project:
 
@@ -39,7 +39,7 @@ The first time the VM is started we should install `rpm-build`
 Now copy the Spring XD release distribution zip file (set XD_VERSION to the correct version):
 
     $ export XD_VERSION='{new-release-version}'
-    $ export XD_REPO='http://repo.spring.io/libs-release-local'
+    $ export XD_REPO='https://repo.spring.io/libs-release-local'
     $ wget -P rpmbuild/SOURCES  ${XD_REPO}/org/springframework/xd/spring-xd/${XD_VERSION}/spring-xd-${XD_VERSION}-dist.zip
 
 Finally build the RPM:

@@ -9,7 +9,7 @@ Group:          Applications/Databases
 License:        Apache License v2.0
 Vendor:         Pivotal
 Packager:       spring-xd@pivotal.io
-URL:            http://projects.spring.io/spring-xd
+URL:            https://projects.spring.io/spring-xd
 
 # Disable automatic dependency processing
 #####AutoReqProv: no
